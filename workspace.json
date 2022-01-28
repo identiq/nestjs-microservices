@@ -1,6 +1,9 @@
 {
   "version": 2,
   "projects": {
-    "gateway": "apps/gateway"
+    "auth": "libs/auth",
+    "data": "libs/data",
+    "gateway": "apps/gateway",
+    "webhook": "apps/webhook"
   }
 }

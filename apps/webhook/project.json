@@ -1,16 +1,16 @@
 {
-  "root": "apps/gateway",
-  "sourceRoot": "apps/gateway/src",
+  "root": "apps/webhook",
+  "sourceRoot": "apps/webhook/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/node:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/gateway",
-        "main": "apps/gateway/src/main.ts",
-        "tsConfig": "apps/gateway/tsconfig.app.json",
-        "assets": ["apps/gateway/src/assets"],
+        "outputPath": "dist/apps/webhook",
+        "main": "apps/webhook/src/main.ts",
+        "tsConfig": "apps/webhook/tsconfig.app.json",
+        "assets": ["apps/webhook/src/assets"],
         "generatePackageJson": true
       },
       "configurations": {
@@ -20,8 +20,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/gateway/src/environments/environment.ts",
-              "with": "apps/gateway/src/environments/environment.prod.ts"
+              "replace": "apps/webhook/src/environments/environment.ts",
+              "with": "apps/webhook/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -30,21 +30,21 @@
     "serve": {
       "executor": "@nrwl/node:execute",
       "options": {
-        "buildTarget": "gateway:build"
+        "buildTarget": "webhook:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/gateway/**/*.ts"]
+        "lintFilePatterns": ["apps/webhook/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/gateway"],
+      "outputs": ["coverage/apps/webhook"],
       "options": {
-        "jestConfig": "apps/gateway/jest.config.js",
+        "jestConfig": "apps/webhook/jest.config.js",
         "passWithNoTests": true
       }
     }

@@ -1,13 +1,22 @@
-import { Controller, Get } from '@nestjs/common';
-
-import { AppService } from './app.service';
+import { Controller, Get, Inject } from '@nestjs/common';
+import { ClientProxy } from '@nestjs/microservices';
+import { Prisma, PrismaPromise, Webhook } from '@prisma/client';
+import { firstValueFrom } from 'rxjs';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    @Inject('WEBHOOK_SERVICE')
+    private readonly webhookServiceClient: ClientProxy
+  ) {}
 
   @Get()
-  getData() {
-    return this.appService.getData();
+  findMany() {
+    return firstValueFrom(
+      this.webhookServiceClient.send<PrismaPromise<Webhook[]>>(
+        'webhooks_find_many',
+        {} as Prisma.WebhookFindManyArgs
+      )
+    );
   }
 }

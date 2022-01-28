@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  gateway:
+    image: gateway
+    restart: always
+    hostname: gateway
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+      - frontend
+  webhook:
+    image: webhook
+    restart: always
+    hostname: webhook
+    env_file:
+      - .env
+    networks:
+      - backend
+    links:
+      - db
+    ports:
+      - ${WEBHOOK_SERVICE_PORT}:${WEBHOOK_SERVICE_PORT}
+  db:
+    build: ./prisma
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    restart: always
+    volumes:
+      - db:/data/db
+    healthcheck:
+      test: test $$(echo "rs.initiate({_id:'rs0',members:[{_id:0,host:'db:27017'}]}).ok || rs.status().ok" | mongo -u $${MONGO_INITDB_ROOT_USERNAME} -p $${MONGO_INITDB_ROOT_PASSWORD} --quiet) -eq 1
+      interval: 10s
+      start_period: 30s
+    command: --keyFile /data/keyfile.pem --replSet rs0 --port 27017
+    ports:
+      - 27017:27017
+    networks:
+      - backend
+
+volumes:
+  db:
+    name: webhook-db
+
+networks:
+  backend:
+  frontend:
+      external:
+        name: infrastructure

@@ -5,13 +5,30 @@
   "scripts": {
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "seed": "ts-node prisma/seed.ts",
+    "migrate:dev": "prisma migrate dev",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "migrate:reset": "npx prisma migrate reset",
+    "prisma:generate": "npx prisma generate",
+    "docker:generate": "openssl rand -base64 756 > ./prisma/replica.key",
+    "docker:db": "docker-compose -p webhooks-db -f docker-compose.db.yml up -d",
+    "docker:db:stop": "docker-compose -p webhooks-db -f docker-compose.db.yml stop",
+    "docker:db:rm": "docker-compose -p webhooks-db -f docker-compose.db.yml down --rmi local -v --remove-orphans",
+    "docker": "docker-compose -p webhooks -f docker-compose.yml up -d",
+    "docker:stop": "docker-compose -p webhooks -f docker-compose.yml stop",
+    "docker:rm": "docker-compose -p webhooks -f docker-compose.yml down --rmi local -v --remove-orphans",
+    "docker:build:gateway": "docker build -f ./apps/gateway/Dockerfile . -t gateway",
+    "docker:build:webhook": "docker build -f ./apps/webhook/Dockerfile . -t webhook"
   },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^1.1.6",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/microservices": "^8.2.6",
     "@nestjs/platform-express": "^8.0.0",
+    "@prisma/client": "^3.8.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.0.0"
@@ -31,10 +48,12 @@
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "~5.3.0",
     "@typescript-eslint/parser": "~5.3.0",
+    "dotenv": "^14.3.2",
     "eslint": "8.2.0",
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",
     "prettier": "^2.5.1",
+    "prisma": "^3.8.1",
     "ts-jest": "27.0.5",
     "typescript": "~4.4.3"
   }
