@@ -5,7 +5,7 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { Transport, TcpOptions, RmqOptions } from '@nestjs/microservices';
+import { Transport, RmqOptions } from '@nestjs/microservices';
 import { WebhookModule } from './webhook.module';
 
 const urls = [process.env.RABBIT_DSN || 'amqp://localhost:5672'];
@@ -22,8 +22,8 @@ async function bootstrap() {
       },
     },
   });
-  app.listen();
-  Logger.log(`🚀 Queue is running on: ${queue}`);
+  await app.listen();
+  Logger.log(`🚀 ${queue} is running on: ${urls.join(',')}`);
 }
 
 bootstrap();

@@ -14,7 +14,7 @@ export class GatewayController {
   findMany() {
     return firstValueFrom(
       this.webhookServiceClient.send<PrismaPromise<Webhook[]>>(
-        'webhooks_find_many',
+        { cmd: 'webhooks_find_many' },
         {} as Prisma.WebhookFindManyArgs
       )
     );

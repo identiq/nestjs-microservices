@@ -5,7 +5,7 @@ import { WebhookController } from './webhook.controller';
 import { WebhookService } from './webhook.service';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [ConfigModule],
   controllers: [WebhookController],
   providers: [WebhookService],
 })

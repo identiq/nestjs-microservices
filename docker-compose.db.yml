@@ -24,7 +24,6 @@ services:
   rabbitmq:
     image: rabbitmq:3-management-alpine
     environment:
-        RABBITMQ_ERLANG_COOKIE: ${RABBITMQ_ERLANG_COOKIE}
         RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
         RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
     ports:
