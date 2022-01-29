@@ -3,9 +3,9 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nx serve",
-    "build": "nx build",
-    "test": "nx test",
+    "start": "nx run-many --target=serve --projects=gateway,webhook --parallel",
+    "build": "nx run-many --target=build --projects=gateway,webhook --parallel",
+    "test": "nx run-many --target=test --projects=gateway,webhook --parallel",
     "seed": "ts-node prisma/seed.ts",
     "migrate:dev": "prisma migrate dev",
     "migrate:deploy": "npx prisma migrate deploy",
@@ -29,6 +29,8 @@
     "@nestjs/microservices": "^8.2.6",
     "@nestjs/platform-express": "^8.0.0",
     "@prisma/client": "^3.8.1",
+    "amqp-connection-manager": "^4.0.1",
+    "amqplib": "^0.8.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.0.0"

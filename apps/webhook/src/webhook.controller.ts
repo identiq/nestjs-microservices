@@ -2,14 +2,14 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Prisma } from '@prisma/client';
 
-import { AppService } from './app.service';
+import { WebhookService } from './webhook.service';
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
+export class WebhookController {
+  constructor(private readonly webhookService: WebhookService) {}
 
   @MessagePattern('webhooks_find_many')
   findMany(args?: Prisma.WebhookFindManyArgs) {
-    return this.appService.findMany(args);
+    return this.webhookService.findMany(args);
   }
 }

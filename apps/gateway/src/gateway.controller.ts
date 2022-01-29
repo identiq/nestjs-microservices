@@ -4,7 +4,7 @@ import { Prisma, PrismaPromise, Webhook } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
 
 @Controller()
-export class AppController {
+export class GatewayController {
   constructor(
     @Inject('WEBHOOK_SERVICE')
     private readonly webhookServiceClient: ClientProxy

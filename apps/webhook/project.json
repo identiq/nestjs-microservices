@@ -5,25 +5,21 @@
   "targets": {
     "build": {
       "executor": "@nrwl/node:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/webhook",
         "main": "apps/webhook/src/main.ts",
         "tsConfig": "apps/webhook/tsconfig.app.json",
-        "assets": ["apps/webhook/src/assets"],
+        "assets": [],
         "generatePackageJson": true
       },
       "configurations": {
         "production": {
           "optimization": true,
           "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "apps/webhook/src/environments/environment.ts",
-              "with": "apps/webhook/src/environments/environment.prod.ts"
-            }
-          ]
+          "inspect": false
         }
       }
     },
@@ -35,14 +31,20 @@
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["apps/webhook/**/*.ts"]
+        "lintFilePatterns": [
+          "apps/webhook/**/*.ts"
+        ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/webhook"],
+      "outputs": [
+        "coverage/apps/webhook"
+      ],
       "options": {
         "jestConfig": "apps/webhook/jest.config.js",
         "passWithNoTests": true
