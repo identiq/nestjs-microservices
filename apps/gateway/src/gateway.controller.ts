@@ -1,7 +1,8 @@
-import { Controller, Get, Inject } from '@nestjs/common';
+import { Controller, Get, Inject, Query } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { Prisma, PrismaPromise, Webhook } from '@prisma/client';
+import { PrismaPromise, Webhook } from '@prisma/client';
 import { firstValueFrom } from 'rxjs';
+import { FindManyDto } from '@webhooks-manager/data';
 
 @Controller()
 export class GatewayController {
@@ -11,11 +12,11 @@ export class GatewayController {
   ) {}
 
   @Get()
-  findMany() {
+  findMany(@Query() args: FindManyDto) {
     return firstValueFrom(
-      this.webhookServiceClient.send<PrismaPromise<Webhook[]>>(
+      this.webhookServiceClient.send<PrismaPromise<Webhook[]>, FindManyDto>(
         { cmd: 'webhooks_find_many' },
-        {} as Prisma.WebhookFindManyArgs
+        args
       )
     );
   }
