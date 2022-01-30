@@ -5,15 +5,24 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { FindManyDto } from '@webhooks-manager/data';
+import {
+  FindManyDto,
+  WebhookCreateDto,
+  WebhookServiceCommand,
+} from '@webhooks-manager/data';
 import { WebhookService } from './webhook.service';
 
 @Controller()
 export class WebhookController {
   constructor(private readonly webhookService: WebhookService) {}
 
-  @MessagePattern({ cmd: 'webhooks_find_many' })
+  @MessagePattern({ cmd: WebhookServiceCommand.FindMany })
   findMany(@Ctx() context: RmqContext, @Payload() args?: FindManyDto) {
     return this.webhookService.findMany(args);
+  }
+
+  @MessagePattern({ cmd: WebhookServiceCommand.Create })
+  create(@Ctx() context: RmqContext, @Payload() data: WebhookCreateDto) {
+    return this.webhookService.create(data);
   }
 }

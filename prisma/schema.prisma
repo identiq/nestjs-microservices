@@ -12,7 +12,24 @@ datasource db {
 }
 
 model Webhook {
-  id      String @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  address String
-  topic   String
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  address   String
+  topic     String
+  logs      Log[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([address, topic])
+  @@map("webhooks")
+}
+
+model Log {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  message   Json
+  webhook   Webhook  @relation(fields: [webhookId], references: [id])
+  webhookId String   @map("webhook_id") @db.ObjectId
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("webhook_logs")
 }

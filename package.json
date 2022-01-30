@@ -11,6 +11,7 @@
     "migrate:deploy": "npx prisma migrate deploy",
     "migrate:reset": "npx prisma migrate reset",
     "prisma:generate": "npx prisma generate",
+    "prisma:push": "npx prisma db push",
     "docker:generate": "openssl rand -base64 756 > ./prisma/replica.key",
     "docker:db": "docker-compose -p webhooks-db -f docker-compose.db.yml up -d",
     "docker:db:stop": "docker-compose -p webhooks-db -f docker-compose.db.yml stop",
@@ -33,6 +34,7 @@
     "amqplib": "^0.8.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "prisma-error-enum": "^0.1.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.0.0"
