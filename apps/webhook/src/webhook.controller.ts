@@ -8,7 +8,7 @@ import {
 import {
   FindManyDto,
   WebhookCreateDto,
-  WebhookServiceCommand,
+  SvcCommand,
 } from '@webhooks-manager/data';
 import { WebhookService } from './webhook.service';
 
@@ -16,12 +16,12 @@ import { WebhookService } from './webhook.service';
 export class WebhookController {
   constructor(private readonly webhookService: WebhookService) {}
 
-  @MessagePattern({ cmd: WebhookServiceCommand.FindMany })
+  @MessagePattern(SvcCommand.WebhookFindMany)
   findMany(@Ctx() context: RmqContext, @Payload() args?: FindManyDto) {
     return this.webhookService.findMany(args);
   }
 
-  @MessagePattern({ cmd: WebhookServiceCommand.Create })
+  @MessagePattern(SvcCommand.WebhookCreate)
   create(@Ctx() context: RmqContext, @Payload() data: WebhookCreateDto) {
     return this.webhookService.create(data);
   }

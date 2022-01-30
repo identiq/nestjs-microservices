@@ -1,46 +1,43 @@
-import { Body, Controller, Get, Inject, Post, Query } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Post,
+  Query,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { Webhook } from '@prisma/client';
 import {
   FindManyDto,
-  ServiceResponseDto,
+  SvcResponse,
+  SvcInterceptor,
   WebhookCreateDto,
-  WebhookServiceCommand,
-  timeoutify,
+  SvcCommand,
 } from '@webhooks-manager/data';
 
 @Controller()
+@UseInterceptors(SvcInterceptor)
 export class GatewayController {
   constructor(
     @Inject('WEBHOOK_SERVICE')
-    private readonly webhookServiceClient: ClientProxy,
-    private readonly configService: ConfigService
+    private readonly webhookServiceClient: ClientProxy
   ) {}
-
-  get timeout() {
-    return +this.configService.get('API_GATEWAY_TIMEOUT', 5000);
-  }
 
   @Get()
   async findMany(@Query() dto: FindManyDto) {
-    return timeoutify(
-      this.webhookServiceClient.send<ServiceResponseDto<Webhook[]>>(
-        { cmd: WebhookServiceCommand.FindMany },
-        dto
-      ),
-      this.timeout
+    return this.webhookServiceClient.send<SvcResponse<Webhook[]>, FindManyDto>(
+      SvcCommand.WebhookFindMany,
+      dto
     );
   }
 
   @Post()
-  create(@Body() data: WebhookCreateDto) {
-    return timeoutify(
-      this.webhookServiceClient.send<ServiceResponseDto<Webhook>>(
-        { cmd: WebhookServiceCommand.Create },
-        data
-      ),
-      this.timeout
-    );
+  create(@Body() dto: WebhookCreateDto) {
+    return this.webhookServiceClient.send<
+      SvcResponse<Webhook>,
+      WebhookCreateDto
+    >(SvcCommand.WebhookCreate, dto);
   }
 }
