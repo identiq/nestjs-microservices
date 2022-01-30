@@ -16,6 +16,7 @@ export class WebhookService {
   ): Promise<ServiceResponseDto<Webhook[]>> {
     try {
       const data = await prisma.webhook.findMany(args);
+      
       return {
         statusCode: HttpStatus.OK,
         message: WebhookServiceMessage.FindManySuccess,

@@ -1,3 +1,7 @@
+export const GatewayServiceMessage = {
+  Timeout: 'gateway_timeout',
+} as const;
+
 export const WebhookServiceMessage = {
   FindManySuccess: 'webhook_find_many_success',
   FindManyBadRequest: 'webhook_find_many_bad_request',
@@ -6,6 +10,7 @@ export const WebhookServiceMessage = {
 } as const;
 
 export const ServiceMessage = {
+  ...GatewayServiceMessage,
   ...WebhookServiceMessage,
 } as const;
 
