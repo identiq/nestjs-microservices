@@ -2,16 +2,19 @@ export const GatewaySvcMessage = {
   Timeout: 'gateway_timeout',
 } as const;
 
-export const WebhookSvcMessage = {
-  FindManySuccess: 'webhook_find_many_success',
-  FindManyBadRequest: 'webhook_find_many_bad_request',
-  Created: 'webhook_created',
-  Conflit: 'webhook_conflit',
+export const HttpSvcMessage = {
+  409: 'conflit',
+  400: 'bad_request',
+} as const;
+
+export const WeebhookSvcMessage = {
+  WebhookValidationAddressSsl: 'validation_address_ssl',
 } as const;
 
 export const SvcMessage = {
   ...GatewaySvcMessage,
-  ...WebhookSvcMessage,
+  ...HttpSvcMessage,
+  ...WeebhookSvcMessage,
 } as const;
 
 export type SvcMessage = typeof SvcMessage[keyof typeof SvcMessage];

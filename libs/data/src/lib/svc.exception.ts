@@ -2,9 +2,9 @@ import { HttpStatus } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 
 export interface ISvcException {
-  message: string | object;
+  message: string | object | string[];
   status: HttpStatus;
-  error: Error;
+  error?: Error;
 }
 
 export class SvcException extends RpcException {

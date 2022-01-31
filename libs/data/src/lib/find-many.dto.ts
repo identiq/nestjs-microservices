@@ -6,5 +6,10 @@ export class FindManyDto implements Prisma.WebhookFindManyArgs {
   @IsOptional()
   @Type(() => Number)
   @IsInt()
-  take: number;
+  take?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsInt()
+  skip?: number;
 }

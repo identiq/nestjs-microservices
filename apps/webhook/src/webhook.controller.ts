@@ -1,4 +1,4 @@
-import { Controller } from '@nestjs/common';
+import { Controller, UseInterceptors } from '@nestjs/common';
 import {
   Ctx,
   MessagePattern,
@@ -9,9 +9,11 @@ import {
   FindManyDto,
   WebhookCreateDto,
   SvcCommand,
+  PrismaInterceptor,
 } from '@webhooks-manager/data';
 import { WebhookService } from './webhook.service';
 
+@UseInterceptors(PrismaInterceptor)
 @Controller()
 export class WebhookController {
   constructor(private readonly webhookService: WebhookService) {}

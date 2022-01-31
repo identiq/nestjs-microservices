@@ -12,13 +12,13 @@ import { Webhook } from '@prisma/client';
 import {
   FindManyDto,
   SvcResponse,
-  SvcInterceptor,
+  GatewayInterceptor,
   WebhookCreateDto,
   SvcCommand,
 } from '@webhooks-manager/data';
 
 @Controller()
-@UseInterceptors(SvcInterceptor)
+@UseInterceptors(GatewayInterceptor)
 export class GatewayController {
   constructor(
     @Inject('WEBHOOK_SERVICE')
