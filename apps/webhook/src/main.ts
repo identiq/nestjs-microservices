@@ -6,6 +6,7 @@
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { Transport, RmqOptions } from '@nestjs/microservices';
+import { Logger as PinoLogger } from 'nestjs-pino';
 import { WebhookModule } from './webhook.module';
 
 const urls = [process.env.RABBIT_DSN || 'amqp://localhost:5672'];
@@ -21,7 +22,9 @@ async function bootstrap() {
         durable: false,
       },
     },
+    bufferLogs: true
   });
+  app.useLogger(app.get(PinoLogger));
   await app.listen();
   Logger.log(`🚀 ${queue} is running on: ${urls.join(',')}`);
 }

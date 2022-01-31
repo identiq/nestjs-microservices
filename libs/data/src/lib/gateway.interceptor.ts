@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Observable, throwError, TimeoutError } from 'rxjs';
-import { catchError, timeout, take, tap } from 'rxjs/operators';
+import { catchError, timeout, tap } from 'rxjs/operators';
 import { SvcMessage } from './svc.message';
 import { SvcException } from './svc.exception';
 import { snakeCase } from './utils';
@@ -18,7 +18,9 @@ import { snakeCase } from './utils';
 export class GatewayInterceptor implements NestInterceptor {
   private logger = new Logger('gateway');
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(
+    private readonly configService: ConfigService,
+  ) {}
 
   get ms() {
     return +this.configService.get('API_GATEWAY_TIMEOUT', 5000);
@@ -53,7 +55,7 @@ export class GatewayInterceptor implements NestInterceptor {
 
         return throwError(
           () =>
-            new HttpException(err, err.status || HttpStatus.BAD_REQUEST)
+            new HttpException(err.message, err.status || HttpStatus.BAD_REQUEST)
         );
       })
     );

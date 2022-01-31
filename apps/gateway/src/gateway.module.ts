@@ -7,9 +7,21 @@ import {
 import { GatewayController } from './gateway.controller';
 import { AuthModule } from '@webhooks-manager/auth';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
-  imports: [ConfigModule, AuthModule],
+  imports: [
+    LoggerModule.forRoot({
+      pinoHttp: {
+        prettyPrint: process.env.NODE_ENV === 'development' && {
+          colorize: true,
+          levelFirst: true,
+        },
+      },
+    }),
+    ConfigModule,
+    AuthModule,
+  ],
   controllers: [GatewayController],
   providers: [
     {
