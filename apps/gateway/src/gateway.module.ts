@@ -9,14 +9,38 @@ import { AuthModule } from '@webhooks-manager/auth';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
 
+import { multistream } from 'pino';
+import pretty from 'pino-pretty';
+import { createLogtailTransport } from '@webhooks-manager/data';
+
 @Module({
   imports: [
-    LoggerModule.forRoot({
-      pinoHttp: {
-        prettyPrint: process.env.NODE_ENV === 'development' && {
-          colorize: true,
-          levelFirst: true,
-        },
+    LoggerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (config: ConfigService) => {
+        const token = config.get<string>('LOGTAIL_TOKEN');
+        return {
+          pinoHttp: [
+            {
+              name: 'gateway',
+              level: 'debug',
+            },
+            multistream([
+              {
+                level: 'info',
+                stream: createLogtailTransport(token),
+              },
+              {
+                stream: pretty({
+                  colorize: true,
+                  levelFirst: true,
+                  translateTime: true,
+                }),
+              },
+            ]),
+          ],
+        };
       },
     }),
     ConfigModule,

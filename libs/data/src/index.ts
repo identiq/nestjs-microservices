@@ -7,3 +7,4 @@ export * from './lib/svc.exception';
 export * from './lib/svc.response';
 export * from './lib/prisma.interceptor';
 export * from './lib/utils';
+export * from './lib/logtail.transport';
